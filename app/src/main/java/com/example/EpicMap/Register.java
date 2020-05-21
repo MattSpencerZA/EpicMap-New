@@ -10,12 +10,17 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ProgressBar;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.FirebaseFirestore;
+
+import java.util.Map;
 
 public class Register extends AppCompatActivity {
 
@@ -23,22 +28,27 @@ public class Register extends AppCompatActivity {
     EditText etusername, etpassword, etconfpass;
     Button next;
     ProgressBar progbar;
+    FirebaseFirestore fstore;
+    TextView tvredirect;
+    String userID;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register);
         etusername = findViewById(R.id.etUsername);
+        etusername.requestFocus();
         etpassword = findViewById(R.id.etPassword);
         etconfpass = findViewById(R.id.etConfirm);
+        tvredirect = findViewById(R.id.tvRedirect);
 
         next = findViewById(R.id.btnNext);
 
-        progbar = findViewById(R.id.progressBar);
+        progbar = findViewById(R.id.progressBar2);
         progbar.setVisibility(View.GONE);
         //init firebase
         firebaseAuth = FirebaseAuth.getInstance();
-        System.out.println(firebaseAuth.toString());
+
         //set onclick listener for the next button
         next.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -48,39 +58,37 @@ public class Register extends AppCompatActivity {
                 final String password2 = etconfpass.getText().toString().trim();
 
                 if(TextUtils.isEmpty(email)){
-                    Toast.makeText(Register.this, "Please enter email!", Toast.LENGTH_SHORT).show();
+                    etusername.setError("Email is required!");
                     return;
                 }
                 if(TextUtils.isEmpty(password)){
-                    Toast.makeText(Register.this, "Please enter password!", Toast.LENGTH_SHORT).show();
+                    etpassword.setError("Password is required!");
                     return;
                 }
-                if(TextUtils.isEmpty(password2)){
-                    Toast.makeText(Register.this, "Please confirm password!", Toast.LENGTH_SHORT).show();
-                    return;
-                }
-                if(password.length() < 6 || password2.length() < 6){
+                if(password.length() < 6){
                     etpassword.setText(null);
                     etconfpass.setText(null);
                     Toast.makeText(Register.this, "Please ensure passwords are longer than 6 characters!", Toast.LENGTH_SHORT).show();
                     return;
                 }
-                progbar.setVisibility(View.VISIBLE);
-
                 if(password.equals(password2)){
+
+                    progbar.setVisibility(View.VISIBLE);
+
                     try {
                         firebaseAuth.createUserWithEmailAndPassword(email, password)
                                 .addOnCompleteListener(Register.this, new OnCompleteListener<AuthResult>() {
                                     @Override
                                     public void onComplete(@NonNull Task<AuthResult> task) {
-                                        progbar.setVisibility(View.GONE);
-                                        System.out.println("im alive!");
-                                        progbar.setProgress(100);
                                         if (task.isSuccessful()) {
-                                            startActivity(new Intent(getApplicationContext(), RegisterTwo.class));
                                             Toast.makeText(Register.this, "Success!", Toast.LENGTH_SHORT).show();
+                                            userID = firebaseAuth.getCurrentUser().getUid();
+                                            DocumentReference documentReference = fstore.collection("users").document(userID);
+                                            Map<String, Object> user
+                                            startActivity(new Intent(getApplicationContext(), RegisterTwo.class));
                                         } else {
-                                            Toast.makeText(Register.this, "Registration failed!", Toast.LENGTH_SHORT).show();
+                                            Toast.makeText(Register.this, "Error !" + task.getException().getMessage(), Toast.LENGTH_SHORT).show();
+                                            progbar.setVisibility(View.GONE);
                                         }
                                     }
                                 });
@@ -94,6 +102,14 @@ public class Register extends AppCompatActivity {
                 }
             }
         });
+
+        tvredirect.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivity(new Intent(getApplicationContext(), LoginActivity.class));
+            }
+        });
+
     }
 }
 

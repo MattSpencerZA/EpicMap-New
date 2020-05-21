@@ -13,6 +13,7 @@ import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DatabaseReference;
 import com.mapbox.android.core.permissions.PermissionsListener;
 import com.mapbox.android.core.permissions.PermissionsManager;
 import com.mapbox.api.directions.v5.DirectionsCriteria;
@@ -41,7 +42,6 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-import static com.mapbox.api.directions.v5.DirectionsCriteria.ANNOTATION_SPEED;
 import static com.mapbox.mapboxsdk.style.layers.PropertyFactory.iconAllowOverlap;
 import static com.mapbox.mapboxsdk.style.layers.PropertyFactory.iconIgnorePlacement;
 import static com.mapbox.mapboxsdk.style.layers.PropertyFactory.iconImage;
@@ -70,7 +70,7 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
         super.onCreate(savedInstanceState);
         Mapbox.getInstance(this, "pk.eyJ1IjoibWF0dHNwZW5jZXIiLCJhIjoiY2s2MHFsaXowMDl3OTNtbnhic2h4bzRqdiJ9.I3Lh1asF_BAtkWyyRm41xA");
         setContentView(R.layout.activity_main);
-        buttonLost = findViewById(R.id.lost);
+        buttonLost = findViewById(R.id.btnLogout);
         mapView = findViewById(R.id.mapView);
         mapView.onCreate(savedInstanceState);
         mapView.getMapAsync(this);
@@ -78,6 +78,12 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
         firebaseAuth = FirebaseAuth.getInstance();
         firebaseUser = firebaseAuth.getCurrentUser();
 
+    }
+
+    public void logout(View view) {
+        FirebaseAuth.getInstance().signOut();
+        startActivity(new Intent(getApplicationContext(), LoginActivity.class));
+        finish();
     }
 
     @Override
@@ -141,32 +147,32 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
     }
 
 
-    public void sendSmsByVIntent() {
-
-        Point originPoint = Point.fromLngLat(locationComponent.getLastKnownLocation().getLongitude(),
-                locationComponent.getLastKnownLocation().getLatitude());
-        String smsBody = "Help, I am stuck at "+ originPoint.toString() +" Please assist me on finding the correct route?";
-        Intent smsVIntent = new Intent(Intent.ACTION_VIEW);
-        // prompts only sms-mms clients
-        smsVIntent.setType("vnd.android-dir/mms-sms");
-        // extra fields for number and message respectively
-        smsVIntent.putExtra("address", phoneNumber);
-        smsVIntent.putExtra("sms_body", smsBody);
-        try{
-            startActivity(smsVIntent);
-            Toast.makeText(this, smsVIntent.toString(), Toast.LENGTH_SHORT).show();
-        } catch (Exception ex) {
-            Toast.makeText(MainActivity.this, "Your sms has failed...",
-                    Toast.LENGTH_LONG).show();
-            ex.printStackTrace();
-        }
-        buttonLost.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View view) {
-                sendSmsByVIntent();
-            }
-        });
-
-    }
+    //public void sendSmsByVIntent() {
+//
+    //    Point originPoint = Point.fromLngLat(locationComponent.getLastKnownLocation().getLongitude(),
+    //            locationComponent.getLastKnownLocation().getLatitude());
+    //    String smsBody = "Help, I am stuck at "+ originPoint.toString() +" Please assist me on finding the correct route?";
+    //    Intent smsVIntent = new Intent(Intent.ACTION_VIEW);
+    //    // prompts only sms-mms clients
+    //    smsVIntent.setType("vnd.android-dir/mms-sms");
+    //    // extra fields for number and message respectively
+    //    smsVIntent.putExtra("address", phoneNumber);
+    //    smsVIntent.putExtra("sms_body", smsBody);
+    //    try{
+    //        startActivity(smsVIntent);
+    //        Toast.makeText(this, smsVIntent.toString(), Toast.LENGTH_SHORT).show();
+    //    } catch (Exception ex) {
+    //        Toast.makeText(MainActivity.this, "Your sms has failed...",
+    //                Toast.LENGTH_LONG).show();
+    //        ex.printStackTrace();
+    //    }
+    //    buttonLost.setOnClickListener(new View.OnClickListener() {
+    //        public void onClick(View view) {
+    //            sendSmsByVIntent();
+    //        }
+    //    });
+//
+    //}
 
     private void getRoute(Point origin, Point destination) {
         NavigationRoute.builder(this)
@@ -286,6 +292,7 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
         super.onLowMemory();
         mapView.onLowMemory();
     }
+
 
 
 }

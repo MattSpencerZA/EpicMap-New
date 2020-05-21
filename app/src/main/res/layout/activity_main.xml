@@ -33,10 +33,11 @@
         mapbox:layout_constraintTop_toTopOf="parent" />
 
     <Button
-        android:id="@+id/lost"
+        android:id="@+id/btnLogout"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Button"
+        android:onClick="logout"
+        android:text="Log Out"
         mapbox:layout_constraintBottom_toBottomOf="@+id/mapView"
         mapbox:layout_constraintEnd_toEndOf="parent"
         mapbox:layout_constraintStart_toStartOf="parent" />

@@ -8,6 +8,18 @@
     android:padding="20dp"
     tools:context="com.example.EpicMap.RegisterTwo">
 
+    <EditText
+        android:id="@+id/etPhone"
+        android:layout_width="333dp"
+        android:layout_height="41dp"
+        android:ems="10"
+        android:hint="Phone Number"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.552" />
+
     <TextView
     android:id="@+id/textView"
     android:layout_width="wrap_content"
@@ -25,14 +37,14 @@
         android:id="@+id/reg.text.2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="152dp"
-        android:text=""
+        android:layout_marginTop="120dp"
+        android:text="Select Your Preference"
         android:textColor="#000000"
         android:textSize="18sp"
         android:textStyle="bold"
         app:layout_constraintBottom_toTopOf="@+id/etUsername"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.498"
+        app:layout_constraintHorizontal_bias="0.515"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -40,14 +52,14 @@
         android:id="@+id/reg.text.3"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="320dp"
-        android:text=""
+        android:layout_marginTop="236dp"
+        android:text="Select Your Preference"
         android:textColor="#000000"
         android:textSize="18sp"
         android:textStyle="bold"
         app:layout_constraintBottom_toTopOf="@+id/etUsername"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.498"
+        app:layout_constraintHorizontal_bias="0.515"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -69,7 +81,7 @@
         app:layout_constraintVertical_bias="0.976"></Button>
 
     <Spinner
-        android:id="@+id/mySpinner"
+        android:id="@+id/spTranspref"
         android:layout_width="342dp"
         android:layout_height="60dp"
         android:layout_marginTop="184dp"
@@ -78,17 +90,16 @@
         app:layout_constraintHorizontal_bias="0.768"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.381" />
+        app:layout_constraintVertical_bias="0.197" />
 
     <Spinner
-        android:id="@+id/spinner"
+        android:id="@+id/spSyspref"
         android:layout_width="341dp"
         android:layout_height="57dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.771"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.289" />
+        app:layout_constraintVertical_bias="0.243" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

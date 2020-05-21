@@ -5,10 +5,12 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -20,14 +22,15 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.firestore.FirebaseFirestore;
 
 public class RegisterTwo extends AppCompatActivity{
     TextView text1, text2;
+    EditText etphone;
     Button register;
     FirebaseAuth firebaseAuth;
     FirebaseUser firebaseUser;
-    FirebaseDatabase database;
-    DatabaseReference reference, reference2;
+    FirebaseFirestore fstore;
     userPrefs userPrefs;
     transportPrefs transportPrefs;
     int maxid = 0;
@@ -37,15 +40,14 @@ public class RegisterTwo extends AppCompatActivity{
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register_two);
         //spinner activity
-        Spinner spinner = findViewById(R.id.mySpinner);
-        Spinner spinnerOne = findViewById(R.id.spinner);
+        Spinner spinner = findViewById(R.id.spTranspref);
+        Spinner spinnerOne = findViewById(R.id.spSyspref);
         text1 = findViewById(R.id.reg_text_2);
         text2 = findViewById(R.id.reg_text_3);
         register = findViewById(R.id.btnRegister);
+        etphone = findViewById(R.id.etPhone);
         userPrefs = new userPrefs();
         transportPrefs = new transportPrefs();
-        reference = FirebaseDatabase.getInstance().getReference().child("TransportPref");
-        reference2 = FirebaseDatabase.getInstance().getReference().child("System");
 
         firebaseAuth = FirebaseAuth.getInstance();
         firebaseUser = firebaseAuth.getCurrentUser();
@@ -69,19 +71,7 @@ public class RegisterTwo extends AppCompatActivity{
                 Toast.makeText(RegisterTwo.this, "Please make a selection!", Toast.LENGTH_SHORT).show();
             }
         });
-        reference.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                if(dataSnapshot.exists()){
-                    maxid = (int)dataSnapshot.getChildrenCount();
-                }
-            }
 
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-
-            }
-        });
 
         ArrayAdapter<CharSequence> adapter2 = ArrayAdapter.createFromResource(this, R.array.userPreference, android.R.layout.simple_spinner_item);
         adapter2.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
@@ -101,34 +91,19 @@ public class RegisterTwo extends AppCompatActivity{
 
             }
         });
-        reference.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                if(dataSnapshot.exists()){
-                    maxid = (int)dataSnapshot.getChildrenCount();
-                }
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-
-            }
-        });
 
         register.setOnClickListener(view -> {
             userPrefs.setSpinner(spinner.getSelectedItem().toString());
             transportPrefs.setSpinner2(spinnerOne.getSelectedItem().toString());
-            int dbEntry = maxid;
-            if(reference!=null) {
-                reference.child(String.valueOf(dbEntry)).setValue(userPrefs).toString();
-                reference2.child(String.valueOf(dbEntry)).setValue(transportPrefs).toString();
+            String phoneNumber = etphone.getText().toString().trim();
 
-                maxid++;
+            if (TextUtils.isEmpty(phoneNumber)) {
+                etphone.setError("Please enter your phone number");
             }
-            else {
-                Toast.makeText(this, "Error !", Toast.LENGTH_SHORT).show();
-                }
-            startActivity(new Intent(RegisterTwo.this, MainActivity.class));
+            if (phoneNumber.length() < 10){
+                etphone.setError("Please enter a valid phone number");
+            }
+
         });
     }
 }
