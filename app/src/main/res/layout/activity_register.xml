@@ -7,6 +7,42 @@
     android:background="@drawable/polyvectwo"
     tools:context="com.example.EpicMap.Register">
 
+    <EditText
+        android:id="@+id/etPhonenum"
+        android:layout_width="333dp"
+        android:layout_height="41dp"
+        android:ems="10"
+        android:hint="Phone Number"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="@+id/spUnits"
+        app:layout_constraintHorizontal_bias="0.474"
+        app:layout_constraintStart_toStartOf="@+id/spUnits"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.44" />
+
+    <Spinner
+        android:id="@+id/spTransportMethod"
+        android:layout_width="336dp"
+        android:layout_height="41dp"
+        android:layout_marginTop="184dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="@+id/progressBar2"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="@+id/progressBar2"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.486" />
+
+    <Spinner
+        android:id="@+id/spUnits"
+        android:layout_width="334dp"
+        android:layout_height="44dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="@+id/spTransportMethod"
+        app:layout_constraintHorizontal_bias="0.506"
+        app:layout_constraintStart_toStartOf="@+id/spTransportMethod"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.537" />
+
     <TextView
         android:id="@+id/textView2"
         android:layout_width="wrap_content"
@@ -15,9 +51,9 @@
         android:textColor="#090101"
         android:textSize="34dp"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.497"
-        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="@+id/etUsername"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="@+id/etUsername"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.06" />
 
@@ -30,10 +66,9 @@
         android:inputType="textPassword"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="@+id/etConfirm"
-        app:layout_constraintHorizontal_bias="0.518"
         app:layout_constraintStart_toStartOf="@+id/etConfirm"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.281" />
+        app:layout_constraintVertical_bias="0.263" />
 
     <EditText
         android:id="@+id/etUsername"
@@ -47,7 +82,7 @@
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="@+id/etPassword"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.174" />
+        app:layout_constraintVertical_bias="0.173" />
 
     <Button
         android:id="@+id/btnNext"
@@ -61,11 +96,11 @@
         android:textColor="#fff"
         android:textSize="20sp"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="@+id/tvRedirect"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="@+id/tvRedirect"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.06">
+        app:layout_constraintVertical_bias="0.536">
 
     </Button>
 
@@ -75,10 +110,11 @@
         android:layout_width="159dp"
         android:layout_height="86dp"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="@+id/btnNext"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="@+id/btnNext"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.66" />
+        app:layout_constraintVertical_bias="0.755" />
 
     <EditText
         android:id="@+id/etConfirm"
@@ -88,9 +124,10 @@
         android:hint="Confirm Password"
         android:inputType="textPassword"
         app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="@+id/etPhonenum"
+        app:layout_constraintStart_toStartOf="@+id/etPhonenum"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.389"
-        tools:layout_editor_absoluteX="36dp" />
+        app:layout_constraintVertical_bias="0.352" />
 
     <TextView
         android:id="@+id/tvRedirect"
@@ -102,6 +139,26 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/btnNext"
-        app:layout_constraintVertical_bias="0.181" />
+        app:layout_constraintVertical_bias="0.36" />
+
+    <TextView
+        android:id="@+id/textView3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:visibility="invisible"
+        app:layout_constraintBottom_toTopOf="@+id/spUnits"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/etPhonenum" />
+
+    <TextView
+        android:id="@+id/textView4"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:visibility="invisible"
+        app:layout_constraintBottom_toTopOf="@+id/spTransportMethod"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/spUnits" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

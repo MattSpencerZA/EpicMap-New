@@ -9,7 +9,7 @@
         <item>Public Transport</item>
     </string-array>
     <string-array name="systemPreference">
-        <item>System Preference</item>
+        <item>Units Preference</item>
         <item>Metric</item>
         <item>Imperial</item>
     </string-array>
