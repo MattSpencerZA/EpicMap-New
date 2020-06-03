@@ -59,7 +59,6 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
     private NavigationMapRoute navigationMapRoute;
     // variables needed to initialize navigation
     private Button button, buttonLost;
-    private String phoneNumber = "076 942 3970";
     private FirebaseAuth firebaseAuth;
     private FirebaseUser firebaseUser;
 
@@ -117,14 +116,14 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
     private void addDestinationIconSymbolLayer(@NonNull Style loadedMapStyle) {
         loadedMapStyle.addImage("destination-icon-id",
                 BitmapFactory.decodeResource(this.getResources(), R.drawable.mapbox_marker_icon_default));
-        GeoJsonSource geoJsonSource = new GeoJsonSource("destination-source-id");
-        loadedMapStyle.addSource(geoJsonSource);
-        SymbolLayer destinationSymbolLayer = new SymbolLayer("destination-symbol-layer-id", "destination-source-id");
-        destinationSymbolLayer.withProperties(
-                iconImage("destination-icon-id"),
-                iconAllowOverlap(true),
-                iconIgnorePlacement(true)
-        );
+                GeoJsonSource geoJsonSource = new GeoJsonSource("destination-source-id");
+                loadedMapStyle.addSource(geoJsonSource);
+                SymbolLayer destinationSymbolLayer = new SymbolLayer("destination-symbol-layer-id", "destination-source-id");
+                destinationSymbolLayer.withProperties(
+                    iconImage("destination-icon-id"),
+                    iconAllowOverlap(true),
+                    iconIgnorePlacement(true)
+                );
         loadedMapStyle.addLayer(destinationSymbolLayer);
     }
 
@@ -134,7 +133,7 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
 
         Point destinationPoint = Point.fromLngLat(point.getLongitude(), point.getLatitude());
         Point originPoint = Point.fromLngLat(locationComponent.getLastKnownLocation().getLongitude(),
-                locationComponent.getLastKnownLocation().getLatitude());
+        locationComponent.getLastKnownLocation().getLatitude());
         GeoJsonSource source = mapboxMap.getStyle().getSourceAs("destination-source-id");
         if (source != null) {
             source.setGeoJson(Feature.fromGeometry(destinationPoint));
@@ -148,7 +147,7 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
 
 
     //public void sendSmsByVIntent() {
-//
+    //
     //    Point originPoint = Point.fromLngLat(locationComponent.getLastKnownLocation().getLongitude(),
     //            locationComponent.getLastKnownLocation().getLatitude());
     //    String smsBody = "Help, I am stuck at "+ originPoint.toString() +" Please assist me on finding the correct route?";
@@ -292,7 +291,4 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
         super.onLowMemory();
         mapView.onLowMemory();
     }
-
-
-
 }

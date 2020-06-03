@@ -37,16 +37,16 @@ public class LoginActivity extends AppCompatActivity {
         progressBar = findViewById(R.id.progressBar2);
         //Buttons
         btnlogin = findViewById(R.id.btnLogin);
-
+        //init firebase and getting the users session
         mAuth = FirebaseAuth.getInstance();
 
-
+        //Login button onclick listener
         btnlogin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 final String email = etusername.getText().toString();
                 final String password = etpassword.getText().toString().trim();
-
+                //User input validation
                 if (TextUtils.isEmpty(email)) {
                     etusername.setError("Email is required!");
                     return;
@@ -77,6 +77,7 @@ public class LoginActivity extends AppCompatActivity {
             }
         });
 
+        //Registration button onclick listener
         btnreg.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
