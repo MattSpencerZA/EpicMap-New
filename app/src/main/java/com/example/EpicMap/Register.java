@@ -130,7 +130,7 @@ public class Register extends AppCompatActivity {
                                             documentReference.set(user).addOnSuccessListener(new OnSuccessListener<Void>() {
                                                 @Override
                                                 public void onSuccess(Void aVoid) {
-                                                    Log.d(TAG, "onSuccess: user profile is created for "+userID);
+                                                    Log.d(TAG, "onSuccess: user profile is created for "+ userID);
                                                 }
                                             });
                                             startActivity(new Intent(getApplicationContext(), MainActivity.class));
