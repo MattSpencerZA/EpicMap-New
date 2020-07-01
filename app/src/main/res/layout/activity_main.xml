@@ -33,24 +33,14 @@
 
     <Button
         android:id="@+id/btnProfile"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginBottom="16dp"
         android:background="@drawable/epicbutton"
         android:enabled="true"
         android:text="@string/profile"
         mapbox:layout_constraintBottom_toBottomOf="parent"
         mapbox:layout_constraintStart_toStartOf="parent" />
-
-    <Button
-        android:id="@+id/btnLogout"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:background="@drawable/epicbutton"
-        android:enabled="true"
-        android:onClick="logout"
-        android:text="@string/log_out"
-        mapbox:layout_constraintBottom_toBottomOf="parent"
-        mapbox:layout_constraintEnd_toEndOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
 

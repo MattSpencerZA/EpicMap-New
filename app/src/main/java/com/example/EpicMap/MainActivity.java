@@ -58,7 +58,7 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
     private static final String TAG = "DirectionsActivity";
     private NavigationMapRoute navigationMapRoute;
     // variables needed to initialize navigation
-    private Button button, buttonLost;
+    private Button button, buttonProfile;
     private FirebaseAuth firebaseAuth;
     private FirebaseUser firebaseUser;
 
@@ -69,13 +69,20 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
         super.onCreate(savedInstanceState);
         Mapbox.getInstance(this, "pk.eyJ1IjoibWF0dHNwZW5jZXIiLCJhIjoiY2s2MHFsaXowMDl3OTNtbnhic2h4bzRqdiJ9.I3Lh1asF_BAtkWyyRm41xA");
         setContentView(R.layout.activity_main);
-        buttonLost = findViewById(R.id.btnLogout);
+        buttonProfile = findViewById(R.id.btnProfile);
         mapView = findViewById(R.id.mapView);
         mapView.onCreate(savedInstanceState);
         mapView.getMapAsync(this);
 
         firebaseAuth = FirebaseAuth.getInstance();
         firebaseUser = firebaseAuth.getCurrentUser();
+
+        buttonProfile.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivity(new Intent(getApplicationContext(), ProfileActivity.class));
+            }
+        });
 
     }
 
