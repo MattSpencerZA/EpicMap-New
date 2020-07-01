@@ -18,10 +18,12 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 
@@ -118,6 +120,23 @@ public class Register extends AppCompatActivity {
                                     @Override
                                     public void onComplete(@NonNull Task<AuthResult> task) {
                                         if (task.isSuccessful()) {
+
+                                            //send verification email
+
+                                            FirebaseUser fUser = firebaseAuth.getCurrentUser();
+                                            fUser.sendEmailVerification().addOnSuccessListener(new OnSuccessListener<Void>() {
+                                                @Override
+                                                public void onSuccess(Void aVoid) {
+                                                    Toast.makeText(Register.this, "Verification email has been sent!", Toast.LENGTH_SHORT).show();
+                                                }
+                                            }).addOnFailureListener(new OnFailureListener() {
+                                                @Override
+                                                public void onFailure(@NonNull Exception e) {
+                                                    Log.d(TAG, "onFailure: Email was not sent!" + e.getMessage());
+                                                }
+                                            });
+
+
                                             Toast.makeText(Register.this, "Success!", Toast.LENGTH_SHORT).show();
                                             userID = firebaseAuth.getCurrentUser().getUid();
                                             DocumentReference documentReference = fstore.collection("users").document(userID);
