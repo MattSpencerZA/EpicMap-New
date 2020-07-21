@@ -28,12 +28,12 @@ import com.google.firebase.firestore.FirebaseFirestoreException;
 
 public class ProfileActivity extends AppCompatActivity {
 
-    TextView fullName, email, phone, verifyMsg;
-    Button editProfile, resetPassword, btnLogout, resendCode;
-    ImageView profileImage;
-    FirebaseAuth fAuth;
-    FirebaseFirestore fStore;
-    String userId;
+   private TextView fullName, email, phone, verifyMsg, sysPref, transPref;
+   private Button editProfile, resetPassword, btnLogout, resendCode;
+   private ImageView profileImage;
+   private FirebaseAuth fAuth;
+   private FirebaseFirestore fStore;
+   private String userId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,6 +43,8 @@ public class ProfileActivity extends AppCompatActivity {
         verifyMsg = findViewById(R.id.verifyMsg);
         phone = findViewById(R.id.profilePhone);
         email = findViewById(R.id.profileEmail);
+        sysPref = findViewById(R.id.profileSysPref);
+        transPref = findViewById(R.id.profileTransportPref);
 
         resendCode = findViewById(R.id.resendCode);
         editProfile = findViewById(R.id.btnEditProfile);
@@ -86,6 +88,8 @@ public class ProfileActivity extends AppCompatActivity {
             public void onEvent(@Nullable DocumentSnapshot documentSnapshot, @Nullable FirebaseFirestoreException e) {
                     phone.setText(documentSnapshot.getString("phoneNum"));
                     email.setText(documentSnapshot.getString("email"));
+                    sysPref.setText(documentSnapshot.getString("sysPref"));
+                    transPref.setText(documentSnapshot.getString("userPref"));
             }
         });
 
@@ -108,12 +112,7 @@ public class ProfileActivity extends AppCompatActivity {
                             public void onSuccess(Void aVoid) {
                                 Toast.makeText(ProfileActivity.this, "Password has been reset successfully.", Toast.LENGTH_SHORT).show();
                             }
-                        }).addOnFailureListener(new OnFailureListener() {
-                            @Override
-                            public void onFailure(@NonNull Exception e) {
-                                Toast.makeText(ProfileActivity.this, "Password reset failed!", Toast.LENGTH_SHORT).show();
-                            }
-                        });
+                        }).addOnFailureListener(e -> Toast.makeText(ProfileActivity.this, "Password reset failed!", Toast.LENGTH_SHORT).show());
                     }
                 });
                 passwordResetDialog.setNegativeButton("No", new DialogInterface.OnClickListener() {
@@ -123,6 +122,18 @@ public class ProfileActivity extends AppCompatActivity {
                     }
                 });
                 passwordResetDialog.create().show();
+            }
+        });
+
+        editProfile.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent i = new Intent(view.getContext(), EditProfileActivity.class);
+                i.putExtra("email", email.getText().toString());
+                i.putExtra("phone", phone.getText().toString());
+                i.putExtra("sysPref", sysPref.getText().toString());
+                i.putExtra("userPref", transPref.getText().toString());
+                startActivity(i);
             }
         });
     }
