@@ -14,11 +14,20 @@ import android.widget.Toast;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.EventListener;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.FirebaseFirestoreException;
+import com.google.firebase.storage.FirebaseStorage;
 import com.mapbox.android.core.permissions.PermissionsListener;
 import com.mapbox.android.core.permissions.PermissionsManager;
 import com.mapbox.api.directions.v5.DirectionsCriteria;
 import com.mapbox.api.directions.v5.models.DirectionsResponse;
 import com.mapbox.api.directions.v5.models.DirectionsRoute;
+import com.mapbox.api.geocoding.v5.MapboxGeocoding;
+import com.mapbox.api.geocoding.v5.models.CarmenFeature;
+import com.mapbox.api.geocoding.v5.models.GeocodingResponse;
 import com.mapbox.geojson.Feature;
 import com.mapbox.geojson.Point;
 import com.mapbox.mapboxsdk.Mapbox;
@@ -38,6 +47,8 @@ import com.mapbox.services.android.navigation.v5.navigation.NavigationRoute;
 
 import java.util.List;
 
+import javax.annotation.Nullable;
+
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -55,12 +66,16 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
     private LocationComponent locationComponent;
     // variables for calculating and drawing a route
     private DirectionsRoute currentRoute;
+    private String destination;
     private static final String TAG = "DirectionsActivity";
     private NavigationMapRoute navigationMapRoute;
     // variables needed to initialize navigation
     private Button button, buttonProfile;
-    private FirebaseAuth firebaseAuth;
-    private FirebaseUser firebaseUser;
+    FirebaseAuth firebaseAuth;
+    FirebaseFirestore FStore;
+    MapHelper mh;
+
+    public static String system, transMethod, userID;
 
 
 
@@ -68,21 +83,67 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Mapbox.getInstance(this, "pk.eyJ1IjoibWF0dHNwZW5jZXIiLCJhIjoiY2s2MHFsaXowMDl3OTNtbnhic2h4bzRqdiJ9.I3Lh1asF_BAtkWyyRm41xA");
+
         setContentView(R.layout.activity_main);
         buttonProfile = findViewById(R.id.btnProfile);
         mapView = findViewById(R.id.mapView);
         mapView.onCreate(savedInstanceState);
         mapView.getMapAsync(this);
 
+        //create an instance of map helper
+        mh = new MapHelper();
+
         firebaseAuth = FirebaseAuth.getInstance();
-        firebaseUser = firebaseAuth.getCurrentUser();
+        FStore = FirebaseFirestore.getInstance();
+
+        userID = firebaseAuth.getCurrentUser().getUid();
+
+        DocumentReference documentReference = FStore.collection("users").document(userID);
+        documentReference.addSnapshotListener(this, new EventListener<DocumentSnapshot>() {
+
+            @SuppressLint("LogNotTimber")
+            @Override
+            public void onEvent(@Nullable DocumentSnapshot documentSnapshot, @Nullable FirebaseFirestoreException e) {
+
+                if (e !=null) {
+                    Log.d(TAG,"Error: " + e.getMessage());
+                }
+                else {
+
+                    // Exception handling for parsing
+                    try {
+
+                        // Gets the units (Imperial or Metric) from the database,
+                        // and also the preferred method of transport from the database
+                        String unit = documentSnapshot.getString("userPref");
+                        String methodOfTransport = documentSnapshot.getString("sysPref");
+
+                        system = mh.getSystemMethod(unit);
+                        transMethod = mh.getTransportationMethod(methodOfTransport);
+
+                    }
+
+                    // If values cannot be retrieved from the database and parsed, then log the error
+                    catch (Exception ex) {
+
+                        Log.d(TAG, "Error: " + ex.getMessage());
+
+                    }
+
+                }
+
+            }
+
+        });
 
         buttonProfile.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 startActivity(new Intent(getApplicationContext(), ProfileActivity.class));
+                mapBoxLocation();
             }
         });
+
 
     }
 
@@ -145,10 +206,8 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
         if (source != null) {
             source.setGeoJson(Feature.fromGeometry(destinationPoint));
         }
-
         getRoute(originPoint, destinationPoint);
         button.setEnabled(true);
-        button.setBackgroundResource(R.color.mapboxBlue);
         return true;
     }
 
@@ -180,13 +239,37 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
 //
     //}
 
+    private void mapBoxLocation() {
+
+        MapboxGeocoding mapboxGeocoding = MapboxGeocoding.builder().accessToken("pk.eyJ1IjoibWF0dHNwZW5jZXIiLCJhIjoiY2s2MHFsaXowMDl3OTNtbnhic2h4bzRqdiJ9.I3Lh1asF_BAtkWyyRm41xA").query(destination).build();
+        mapboxGeocoding.enqueueCall(new Callback<GeocodingResponse>() {
+            @Override
+            public void onResponse(Call<GeocodingResponse> call, Response<GeocodingResponse> response) { List<CarmenFeature> results = response.body().features();
+            if (results.size() > 0) {
+                // Log the first results Point.
+                Point firstResultPoint = results.get(0).center();
+                Log.d(TAG, "onResponse: " + firstResultPoint.toString());
+
+            } else {
+                // No result for your request were found.
+                Log.d(TAG, "onResponse: No result found");
+            }
+            }
+
+            @Override
+            public void onFailure(Call<GeocodingResponse> call, Throwable throwable) {
+                throwable.printStackTrace();
+            }
+        });
+    }
+
     private void getRoute(Point origin, Point destination) {
         NavigationRoute.builder(this)
                 .accessToken("pk.eyJ1IjoibWF0dHNwZW5jZXIiLCJhIjoiY2s2MHFsaXowMDl3OTNtbnhic2h4bzRqdiJ9.I3Lh1asF_BAtkWyyRm41xA")
                 .origin(origin)
-                .profile(DirectionsCriteria.PROFILE_DRIVING)
+                .profile(system) // TODO: 2020/07/21  replace this with user input from db
                 .destination(destination)
-                .voiceUnits(DirectionsCriteria.METRIC)
+                .voiceUnits(transMethod)
                 .build()
                 .getRoute(new Callback<DirectionsResponse>() {
                     @Override
@@ -236,6 +319,7 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
             permissionsManager.requestLocationPermissions(this);
         }
     }
+
 
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
