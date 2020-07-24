@@ -96,6 +96,7 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
         firebaseAuth = FirebaseAuth.getInstance();
         FStore = FirebaseFirestore.getInstance();
 
+
         userID = firebaseAuth.getCurrentUser().getUid();
 
         DocumentReference documentReference = FStore.collection("users").document(userID);
@@ -103,37 +104,25 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
 
             @SuppressLint("LogNotTimber")
             @Override
-            public void onEvent(@Nullable DocumentSnapshot documentSnapshot, @Nullable FirebaseFirestoreException e) {
+            public void onEvent(@Nullable DocumentSnapshot documentSnapshot, @Nullable FirebaseFirestoreException exception) {
 
-                if (e !=null) {
-                    Log.d(TAG,"Error: " + e.getMessage());
+                if (exception !=null) {
+                    Log.d(TAG,"Error: " + exception.getMessage());
                 }
                 else {
-
-                    // Exception handling for parsing
                     try {
-
-                        // Gets the units (Imperial or Metric) from the database,
-                        // and also the preferred method of transport from the database
                         String unit = documentSnapshot.getString("userPref");
                         String methodOfTransport = documentSnapshot.getString("sysPref");
 
                         system = mh.getSystemMethod(unit);
                         transMethod = mh.getTransportationMethod(methodOfTransport);
-
                     }
 
-                    // If values cannot be retrieved from the database and parsed, then log the error
                     catch (Exception ex) {
-
                         Log.d(TAG, "Error: " + ex.getMessage());
-
                     }
-
                 }
-
             }
-
         });
 
         buttonProfile.setOnClickListener(new View.OnClickListener() {
@@ -264,12 +253,13 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
     }
 
     private void getRoute(Point origin, Point destination) {
+
         NavigationRoute.builder(this)
                 .accessToken("pk.eyJ1IjoibWF0dHNwZW5jZXIiLCJhIjoiY2s2MHFsaXowMDl3OTNtbnhic2h4bzRqdiJ9.I3Lh1asF_BAtkWyyRm41xA")
                 .origin(origin)
-                .profile(system) // TODO: 2020/07/21  replace this with user input from db
+                .profile(transMethod)
                 .destination(destination)
-                .voiceUnits(transMethod)
+                .voiceUnits(system)
                 .build()
                 .getRoute(new Callback<DirectionsResponse>() {
                     @Override
