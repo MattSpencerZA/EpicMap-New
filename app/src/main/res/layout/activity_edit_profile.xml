@@ -7,6 +7,20 @@
     android:layout_height="match_parent"
     tools:context=".EditProfileActivity">
 
+    <Button
+        android:id="@+id/btnDeleteAccount"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="64dp"
+        android:background="@drawable/epicbutton"
+        android:text="Delete Account"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tvTransPref"
+        app:layout_constraintVertical_bias="1.0" />
+
     <EditText
         android:id="@+id/profileEmail"
         android:layout_width="match_parent"
@@ -69,7 +83,7 @@
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tvTransPref"
-        app:layout_constraintVertical_bias="0.564" />
+        app:layout_constraintVertical_bias="0.621" />
 
     <Spinner
         android:id="@+id/spSysPref"

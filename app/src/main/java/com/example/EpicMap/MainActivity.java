@@ -77,8 +77,6 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
 
     public static String system, transMethod, userID;
 
-
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -90,18 +88,15 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
         mapView.onCreate(savedInstanceState);
         mapView.getMapAsync(this);
 
-        //create an instance of map helper
         mh = new MapHelper();
 
         firebaseAuth = FirebaseAuth.getInstance();
         FStore = FirebaseFirestore.getInstance();
 
-
         userID = firebaseAuth.getCurrentUser().getUid();
 
         DocumentReference documentReference = FStore.collection("users").document(userID);
         documentReference.addSnapshotListener(this, new EventListener<DocumentSnapshot>() {
-
             @SuppressLint("LogNotTimber")
             @Override
             public void onEvent(@Nullable DocumentSnapshot documentSnapshot, @Nullable FirebaseFirestoreException exception) {
@@ -111,13 +106,12 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
                 }
                 else {
                     try {
-                        String unit = documentSnapshot.getString("userPref");
-                        String methodOfTransport = documentSnapshot.getString("sysPref");
+                        String unit = documentSnapshot.getString("sysPref");
+                        String methodOfTransport = documentSnapshot.getString("userPref");
 
                         system = mh.getSystemMethod(unit);
                         transMethod = mh.getTransportationMethod(methodOfTransport);
                     }
-
                     catch (Exception ex) {
                         Log.d(TAG, "Error: " + ex.getMessage());
                     }
@@ -129,7 +123,8 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
             @Override
             public void onClick(View view) {
                 startActivity(new Intent(getApplicationContext(), ProfileActivity.class));
-                mapBoxLocation();
+
+              //  mapBoxLocation();
             }
         });
 
@@ -228,29 +223,29 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
 //
     //}
 
-    private void mapBoxLocation() {
-
-        MapboxGeocoding mapboxGeocoding = MapboxGeocoding.builder().accessToken("pk.eyJ1IjoibWF0dHNwZW5jZXIiLCJhIjoiY2s2MHFsaXowMDl3OTNtbnhic2h4bzRqdiJ9.I3Lh1asF_BAtkWyyRm41xA").query(destination).build();
-        mapboxGeocoding.enqueueCall(new Callback<GeocodingResponse>() {
-            @Override
-            public void onResponse(Call<GeocodingResponse> call, Response<GeocodingResponse> response) { List<CarmenFeature> results = response.body().features();
-            if (results.size() > 0) {
-                // Log the first results Point.
-                Point firstResultPoint = results.get(0).center();
-                Log.d(TAG, "onResponse: " + firstResultPoint.toString());
-
-            } else {
-                // No result for your request were found.
-                Log.d(TAG, "onResponse: No result found");
-            }
-            }
-
-            @Override
-            public void onFailure(Call<GeocodingResponse> call, Throwable throwable) {
-                throwable.printStackTrace();
-            }
-        });
-    }
+    //private void mapBoxLocation() {
+//
+    //    MapboxGeocoding mapboxGeocoding = MapboxGeocoding.builder().accessToken("pk.eyJ1IjoibWF0dHNwZW5jZXIiLCJhIjoiY2s2MHFsaXowMDl3OTNtbnhic2h4bzRqdiJ9.I3Lh1asF_BAtkWyyRm41xA").query(destination).build();
+    //    mapboxGeocoding.enqueueCall(new Callback<GeocodingResponse>() {
+    //        @Override
+    //        public void onResponse(Call<GeocodingResponse> call, Response<GeocodingResponse> response) { List<CarmenFeature> results = response.body().features();
+    //        if (results.size() > 0) {
+    //            // Log the first results Point.
+    //            Point firstResultPoint = results.get(0).center();
+    //            Log.d(TAG, "onResponse: " + firstResultPoint.toString());
+//
+    //        } else {
+    //            // No result for your request were found.
+    //            Log.d(TAG, "onResponse: No result found");
+    //        }
+    //        }
+//
+    //        @Override
+    //        public void onFailure(Call<GeocodingResponse> call, Throwable throwable) {
+    //            throwable.printStackTrace();
+    //        }
+    //    });
+    //}
 
     private void getRoute(Point origin, Point destination) {
 

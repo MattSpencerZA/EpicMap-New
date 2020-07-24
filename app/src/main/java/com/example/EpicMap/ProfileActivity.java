@@ -88,8 +88,8 @@ public class ProfileActivity extends AppCompatActivity {
             public void onEvent(@Nullable DocumentSnapshot documentSnapshot, @Nullable FirebaseFirestoreException e) {
                     phone.setText(documentSnapshot.getString("phoneNum"));
                     email.setText(documentSnapshot.getString("email"));
-                    sysPref.setText(documentSnapshot.getString("sysPref"));
-                    transPref.setText(documentSnapshot.getString("userPref"));
+                    sysPref.setText(documentSnapshot.getString("userPref"));
+                    transPref.setText(documentSnapshot.getString("sysPref"));
             }
         });
 

@@ -14,7 +14,7 @@ public class MapHelper {
         if(getTransport.equals("Walking")){
             transMethod = DirectionsCriteria.PROFILE_WALKING;
         }
-        if(getTransport.equals("Public Transport")) {
+        if(getTransport.equals("Cycling")) {
             transMethod = DirectionsCriteria.PROFILE_CYCLING;
         }
         return transMethod;
