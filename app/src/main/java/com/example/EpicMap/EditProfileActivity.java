@@ -4,6 +4,8 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -40,7 +42,7 @@ public class EditProfileActivity extends AppCompatActivity {
     ImageView profileImageView;
     TextView tvSyspref, tvTransPref;
     Spinner sysPref, transportMethod;
-    Button saveBtn;
+    Button saveBtn, deleteAccBtn;
     FirebaseAuth fAuth;
     FirebaseFirestore fStore;
     FirebaseUser user;
@@ -53,14 +55,15 @@ public class EditProfileActivity extends AppCompatActivity {
 
         Intent data = getIntent();
         String emailAddress = data.getStringExtra("email");
-        String phoneNum = data.getStringExtra("phone");
-        String transportPreference = data.getStringExtra("userPref");
+        String phoneNum = data.getStringExtra("phoneNum");
+        String transportPreference = data.getStringExtra("transPref");
         String systemPreference = data.getStringExtra("sysPref");
 
         profileEmail = findViewById(R.id.profileEmail);
         profileNumber = findViewById(R.id.profilePhoneNo);
         profileImageView = findViewById(R.id.profileImaveView);
         saveBtn = findViewById(R.id.btnSave);
+        deleteAccBtn = findViewById(R.id.btnDeleteAccount);
 
         tvSyspref = findViewById(R.id.tvSysPref);
         tvTransPref = findViewById(R.id.tvTransPref);
@@ -110,7 +113,7 @@ public class EditProfileActivity extends AppCompatActivity {
                         edited.put("email", email);
                         edited.put("phoneNum", profileNumber.getText().toString());
                         edited.put("sysPref", tvSyspref.getText().toString());
-                        edited.put("userPref", tvTransPref.getText().toString());
+                        edited.put("transPref", tvTransPref.getText().toString());
                         docRef.update(edited).addOnSuccessListener(new OnSuccessListener<Void>() {
                             @Override
                             public void onSuccess(Void aVoid) {
@@ -128,6 +131,38 @@ public class EditProfileActivity extends AppCompatActivity {
                     }
                 });
 
+            }
+        });
+
+        deleteAccBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                AlertDialog.Builder alert = new AlertDialog.Builder(EditProfileActivity.this);
+                alert.setTitle("Are you sure you wish to delete your account?");
+                alert.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        user.delete().addOnSuccessListener(new OnSuccessListener<Void>() {
+                            @Override
+                            public void onSuccess(Void aVoid) {
+                                Toast.makeText(EditProfileActivity.this, "Task was successful! User has been deleted!", Toast.LENGTH_SHORT).show();
+                                Intent i = new Intent(EditProfileActivity.this, LoginActivity.class);
+                                i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                                i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                                startActivity(i);
+                            }
+                        });
+                    }
+                });
+
+                alert.setNegativeButton("Dismiss", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                    }
+                });
+                AlertDialog alertDialog = alert.create();
+                alert.show();
             }
         });
 
@@ -180,7 +215,7 @@ public class EditProfileActivity extends AppCompatActivity {
     }
 
     public void transportPreference (Spinner spinner, TextView tvTransPref){
-        ArrayAdapter<CharSequence> adapter2 = ArrayAdapter.createFromResource(this, R.array.userPreference, android.R.layout.simple_spinner_item);
+        ArrayAdapter<CharSequence> adapter2 = ArrayAdapter.createFromResource(this, R.array.transportPreference, android.R.layout.simple_spinner_item);
         adapter2.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinner.setAdapter(adapter2);
         spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
@@ -199,4 +234,5 @@ public class EditProfileActivity extends AppCompatActivity {
             }
         });
     }
+
 }

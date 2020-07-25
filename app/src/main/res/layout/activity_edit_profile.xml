@@ -10,16 +10,16 @@
     <Button
         android:id="@+id/btnDeleteAccount"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="35dp"
         android:layout_marginBottom="64dp"
         android:background="@drawable/epicbutton"
         android:text="Delete Account"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintEnd_toEndOf="@+id/btnSave"
         app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintStart_toStartOf="@+id/btnSave"
         app:layout_constraintTop_toBottomOf="@+id/tvTransPref"
-        app:layout_constraintVertical_bias="1.0" />
+        app:layout_constraintVertical_bias="0.765" />
 
     <EditText
         android:id="@+id/profileEmail"
@@ -49,8 +49,8 @@
 
     <ImageView
         android:id="@+id/profileImaveView"
-        android:layout_width="188dp"
-        android:layout_height="159dp"
+        android:layout_width="137dp"
+        android:layout_height="86dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="@+id/editProfile"
         app:layout_constraintHorizontal_bias="0.523"
@@ -74,44 +74,35 @@
     <Button
         android:id="@+id/btnSave"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="35dp"
         android:layout_marginBottom="64dp"
         android:background="@drawable/epicbutton"
         android:text="Save"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tvTransPref"
-        app:layout_constraintVertical_bias="0.621" />
+        app:layout_constraintVertical_bias="0.255" />
 
     <Spinner
         android:id="@+id/spSysPref"
         android:layout_width="409dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="380dp"
-        app:layout_constraintEnd_toEndOf="@+id/profilePhoneNo"
-        app:layout_constraintHorizontal_bias="0.0"
+        android:layout_marginTop="324dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="@+id/profilePhoneNo"
         app:layout_constraintTop_toTopOf="parent" />
-
-    <TextView
-        android:id="@+id/tvSysPref"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="TextView"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.46"
-        app:layout_constraintStart_toStartOf="@+id/spSysPref"
-        app:layout_constraintTop_toBottomOf="@+id/spSysPref" />
 
     <TextView
         android:id="@+id/tvTransPref"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="TextView"
+        android:textColor="#000000"
         app:layout_constraintEnd_toEndOf="@+id/spTransPref"
-        app:layout_constraintHorizontal_bias="0.46"
+        app:layout_constraintHorizontal_bias="0.461"
         app:layout_constraintStart_toStartOf="@+id/spTransPref"
         app:layout_constraintTop_toBottomOf="@+id/spTransPref" />
 
@@ -119,10 +110,21 @@
         android:id="@+id/spTransPref"
         android:layout_width="409dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="436dp"
+        android:layout_marginTop="380dp"
         app:layout_constraintEnd_toEndOf="@+id/spSysPref"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="@+id/spSysPref"
         app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/tvSysPref"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="TextView"
+        android:textColor="#000000"
+        app:layout_constraintEnd_toEndOf="@+id/spSysPref"
+        app:layout_constraintHorizontal_bias="0.461"
+        app:layout_constraintStart_toStartOf="@+id/spSysPref"
+        app:layout_constraintTop_toBottomOf="@+id/spSysPref" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

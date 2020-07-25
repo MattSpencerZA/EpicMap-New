@@ -107,7 +107,7 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
                 else {
                     try {
                         String unit = documentSnapshot.getString("sysPref");
-                        String methodOfTransport = documentSnapshot.getString("userPref");
+                        String methodOfTransport = documentSnapshot.getString("transPref");
 
                         system = mh.getSystemMethod(unit);
                         transMethod = mh.getTransportationMethod(methodOfTransport);
@@ -194,58 +194,6 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
         button.setEnabled(true);
         return true;
     }
-
-
-    //public void sendSmsByVIntent() {
-    //
-    //    Point originPoint = Point.fromLngLat(locationComponent.getLastKnownLocation().getLongitude(),
-    //            locationComponent.getLastKnownLocation().getLatitude());
-    //    String smsBody = "Help, I am stuck at "+ originPoint.toString() +" Please assist me on finding the correct route?";
-    //    Intent smsVIntent = new Intent(Intent.ACTION_VIEW);
-    //    // prompts only sms-mms clients
-    //    smsVIntent.setType("vnd.android-dir/mms-sms");
-    //    // extra fields for number and message respectively
-    //    smsVIntent.putExtra("address", phoneNumber);
-    //    smsVIntent.putExtra("sms_body", smsBody);
-    //    try{
-    //        startActivity(smsVIntent);
-    //        Toast.makeText(this, smsVIntent.toString(), Toast.LENGTH_SHORT).show();
-    //    } catch (Exception ex) {
-    //        Toast.makeText(MainActivity.this, "Your sms has failed...",
-    //                Toast.LENGTH_LONG).show();
-    //        ex.printStackTrace();
-    //    }
-    //    buttonLost.setOnClickListener(new View.OnClickListener() {
-    //        public void onClick(View view) {
-    //            sendSmsByVIntent();
-    //        }
-    //    });
-//
-    //}
-
-    //private void mapBoxLocation() {
-//
-    //    MapboxGeocoding mapboxGeocoding = MapboxGeocoding.builder().accessToken("pk.eyJ1IjoibWF0dHNwZW5jZXIiLCJhIjoiY2s2MHFsaXowMDl3OTNtbnhic2h4bzRqdiJ9.I3Lh1asF_BAtkWyyRm41xA").query(destination).build();
-    //    mapboxGeocoding.enqueueCall(new Callback<GeocodingResponse>() {
-    //        @Override
-    //        public void onResponse(Call<GeocodingResponse> call, Response<GeocodingResponse> response) { List<CarmenFeature> results = response.body().features();
-    //        if (results.size() > 0) {
-    //            // Log the first results Point.
-    //            Point firstResultPoint = results.get(0).center();
-    //            Log.d(TAG, "onResponse: " + firstResultPoint.toString());
-//
-    //        } else {
-    //            // No result for your request were found.
-    //            Log.d(TAG, "onResponse: No result found");
-    //        }
-    //        }
-//
-    //        @Override
-    //        public void onFailure(Call<GeocodingResponse> call, Throwable throwable) {
-    //            throwable.printStackTrace();
-    //        }
-    //    });
-    //}
 
     private void getRoute(Point origin, Point destination) {
 

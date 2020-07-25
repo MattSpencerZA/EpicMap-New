@@ -2,7 +2,7 @@
 
     <string name="app_name">EpicMap</string>
     <string name="password">Password</string>
-    <string-array name="userPreference">
+    <string-array name="transportPreference">
         <item>Transportation Preference</item>
         <item>Car</item>
         <item>Walking</item>

@@ -1,6 +1,6 @@
 package com.example.EpicMap;
 
-public class userPrefs {
+public class transPrefs {
 
     private String spinner;
 
@@ -12,7 +12,7 @@ public class userPrefs {
         this.spinner = spinner;
     }
 
-    public userPrefs() {
+    public transPrefs() {
 
     }
 }

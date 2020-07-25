@@ -30,10 +30,6 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import java.util.HashMap;
 import java.util.Map;
 
-import static android.R.layout.simple_spinner_item;
-import static com.example.EpicMap.R.array.systemPreference;
-import static com.example.EpicMap.R.array.userPreference;
-
 public class Register extends AppCompatActivity {
 
     public static final String TAG = "TAG";
@@ -42,7 +38,7 @@ public class Register extends AppCompatActivity {
     private Button next;
     private ProgressBar progbar;
     private FirebaseFirestore fstore;
-    private TextView tvredirect, textview1, textview2;
+    private TextView tvredirect, unitsPrefs, transportationPref;
     private String userID;
     private String unitsPref = "metric";
     private String transportPref = "driving";
@@ -66,12 +62,12 @@ public class Register extends AppCompatActivity {
         //spinner activity
         Spinner units = findViewById(R.id.spUnits);
         Spinner transportMethod = findViewById(R.id.spTransportMethod);
-        textview1 = findViewById(R.id.textView3);
-        textview2 = findViewById(R.id.textView4);
+        unitsPrefs = findViewById(R.id.tvUnits);
+        transportationPref = findViewById(R.id.tvTrans);
 
         // init spinners
-        unitsPreference(units, textview1);
-        transportPreference(transportMethod, textview2);
+        unitsPreference(units, unitsPrefs);
+        transportPreference(transportMethod, transportationPref);
 
         //init firebase
         firebaseAuth = FirebaseAuth.getInstance();
@@ -84,8 +80,8 @@ public class Register extends AppCompatActivity {
                 final String email = etusername.getText().toString();
                 final String password = etpassword.getText().toString().trim();
                 final String password2 = etconfpass.getText().toString().trim();
-                final String usersPreference = textview1.getText().toString();
-                final String systemsPreferecence = textview2.getText().toString();
+                final String systemPreference = unitsPrefs.getText().toString();
+                final String transPreferecence = transportationPref.getText().toString();
                 final String phoneNumber = etphone.getText().toString().trim();
 
                 if(TextUtils.isEmpty(email)){
@@ -142,8 +138,8 @@ public class Register extends AppCompatActivity {
                                             DocumentReference documentReference = fstore.collection("users").document(userID);
                                             Map<String, Object> user = new HashMap<>();
                                             user.put("email", email);
-                                            user.put("userPref", usersPreference);
-                                            user.put("sysPref", systemsPreferecence);
+                                            user.put("transPref", transPreferecence);
+                                            user.put("sysPref", systemPreference);
                                             user.put("phoneNum", phoneNumber);
                                             //insert to firestore cloud
                                             documentReference.set(user).addOnSuccessListener(new OnSuccessListener<Void>() {
@@ -179,7 +175,7 @@ public class Register extends AppCompatActivity {
 
     }
 
-    public void unitsPreference (Spinner spinnerOne, TextView textview1){
+    public void unitsPreference (Spinner spinnerOne, TextView tvUnits){
 
         ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this, R.array.systemPreference, android.R.layout.simple_spinner_item);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
@@ -191,7 +187,7 @@ public class Register extends AppCompatActivity {
                 if(adapterView.getItemAtPosition(i).equals("Transportation Preference")){
                     Toast.makeText(Register.this, "Please choose your preference", Toast.LENGTH_SHORT).show();
                 } else {
-                    textview1.setText(adapterView.getSelectedItem().toString());
+                    tvUnits.setText(adapterView.getSelectedItem().toString());
                 }
             }
 
@@ -202,8 +198,8 @@ public class Register extends AppCompatActivity {
         });
     }
 
-    public void transportPreference (Spinner spinner, TextView textview2){
-        ArrayAdapter<CharSequence> adapter2 = ArrayAdapter.createFromResource(this, R.array.userPreference, android.R.layout.simple_spinner_item);
+    public void transportPreference (Spinner spinner, TextView tvTrans){
+        ArrayAdapter<CharSequence> adapter2 = ArrayAdapter.createFromResource(this, R.array.transportPreference, android.R.layout.simple_spinner_item);
         adapter2.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinner.setAdapter(adapter2);
         spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
@@ -212,7 +208,7 @@ public class Register extends AppCompatActivity {
                 if(adapterView.getItemAtPosition(i).equals("Units Preference")){
                     Toast.makeText(Register.this, "Please choose your preference", Toast.LENGTH_SHORT).show();
                 } else {
-                    textview2.setText(adapterView.getSelectedItem().toString());
+                    tvTrans.setText(adapterView.getSelectedItem().toString());
                 }
             }
 

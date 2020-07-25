@@ -88,8 +88,8 @@ public class ProfileActivity extends AppCompatActivity {
             public void onEvent(@Nullable DocumentSnapshot documentSnapshot, @Nullable FirebaseFirestoreException e) {
                     phone.setText(documentSnapshot.getString("phoneNum"));
                     email.setText(documentSnapshot.getString("email"));
-                    sysPref.setText(documentSnapshot.getString("userPref"));
-                    transPref.setText(documentSnapshot.getString("sysPref"));
+                    sysPref.setText(documentSnapshot.getString("sysPref"));
+                    transPref.setText(documentSnapshot.getString("transPref"));
             }
         });
 
@@ -130,9 +130,9 @@ public class ProfileActivity extends AppCompatActivity {
             public void onClick(View view) {
                 Intent i = new Intent(view.getContext(), EditProfileActivity.class);
                 i.putExtra("email", email.getText().toString());
-                i.putExtra("phone", phone.getText().toString());
+                i.putExtra("phoneNum", phone.getText().toString());
                 i.putExtra("sysPref", sysPref.getText().toString());
-                i.putExtra("userPref", transPref.getText().toString());
+                i.putExtra("transPref", transPref.getText().toString());
                 startActivity(i);
             }
         });
@@ -140,8 +140,10 @@ public class ProfileActivity extends AppCompatActivity {
 
     public void logout (View view){
         FirebaseAuth.getInstance().signOut(); //logout
-        startActivity(new Intent(getApplicationContext(), LoginActivity.class));
-        finish();
+        Intent i = new Intent(ProfileActivity.this, LoginActivity.class);
+        i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        startActivity(i);
     }
 }
 
