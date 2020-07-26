@@ -12,8 +12,8 @@
         mapbox:mapbox_cameraTargetLat="38.9098"
         mapbox:mapbox_cameraTargetLng="-77.0295"
         mapbox:mapbox_cameraZoom="12"
-        tools:layout_editor_absoluteX="-76dp"
-        tools:layout_editor_absoluteY="16dp" >
+        tools:layout_editor_absoluteX="-29dp"
+        tools:layout_editor_absoluteY="74dp">
 
         <Button
             android:id="@+id/startButton"
@@ -28,7 +28,6 @@
             android:textColor="@color/mapboxWhite" />
 
 
-
     </com.mapbox.mapboxsdk.maps.MapView>
 
     <Button
@@ -40,6 +39,18 @@
         android:enabled="true"
         android:text="@string/profile"
         mapbox:layout_constraintBottom_toBottomOf="parent"
+        mapbox:layout_constraintStart_toStartOf="parent" />
+
+    <Button
+        android:id="@+id/btnSearch"
+        android:layout_width="match_parent"
+        android:layout_height="42dp"
+        android:layout_marginBottom="23dp"
+        android:background="@drawable/epicbutton"
+        android:enabled="true"
+        android:text="Search Via Address"
+        mapbox:layout_constraintBottom_toTopOf="@+id/btnProfile"
+        mapbox:layout_constraintEnd_toEndOf="parent"
         mapbox:layout_constraintStart_toStartOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
