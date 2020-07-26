@@ -18,23 +18,18 @@ import android.widget.Button;
 import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
-import com.google.firebase.storage.FirebaseStorage;
 import com.mapbox.android.core.permissions.PermissionsListener;
 import com.mapbox.android.core.permissions.PermissionsManager;
-import com.mapbox.api.directions.v5.DirectionsCriteria;
 import com.mapbox.api.directions.v5.models.DirectionsResponse;
 import com.mapbox.api.directions.v5.models.DirectionsRoute;
 import com.mapbox.api.geocoding.v5.GeocodingCriteria;
 import com.mapbox.api.geocoding.v5.MapboxGeocoding;
 import com.mapbox.api.geocoding.v5.models.CarmenFeature;
-import com.mapbox.api.geocoding.v5.models.GeocodingResponse;
 import com.mapbox.geojson.Feature;
 import com.mapbox.geojson.FeatureCollection;
 import com.mapbox.geojson.Point;
@@ -57,6 +52,9 @@ import com.mapbox.services.android.navigation.ui.v5.NavigationLauncherOptions;
 import com.mapbox.services.android.navigation.ui.v5.route.NavigationMapRoute;
 import com.mapbox.services.android.navigation.v5.navigation.NavigationRoute;
 
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
@@ -83,11 +81,12 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
     private static final String TAG = "DirectionsActivity";
     private NavigationMapRoute navigationMapRoute;
     // variables needed to initialize navigation
-    private Button button, buttonProfile, btnSearch;
+    private Button button, buttonProfile, btnSearch, btnHistory;
 
     FirebaseAuth firebaseAuth;
     FirebaseFirestore FStore;
     MapHelper mh;
+    DBHelper db;
 
     private String geojsonSourceLayerId = "geojsonSourceLayerId";
 
@@ -109,6 +108,9 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
         mapView.getMapAsync(this);
 
         mh = new MapHelper();
+        db = new DBHelper(this);
+
+        btnHistory = findViewById(R.id.btnHistory);
 
         firebaseAuth = FirebaseAuth.getInstance();
         FStore = FirebaseFirestore.getInstance();
@@ -153,7 +155,15 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
             }
         });
 
+        btnHistory.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
 
+                Intent history = new Intent(MainActivity.this, RouteActivity.class);
+                startActivity(history);
+
+            }
+        });
 
     }
 
@@ -167,11 +177,6 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
 
     }
 
-    public void logout(View view) {
-        FirebaseAuth.getInstance().signOut();
-        startActivity(new Intent(getApplicationContext(), LoginActivity.class));
-        finish();
-    }
 
     private void getCurrentLocation() {
 
@@ -219,6 +224,9 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
                                 .build();
                         // Call this method with Context from within an Activity
                         NavigationLauncher.startNavigation(MainActivity.this, options);
+
+                        insertRoute();
+
                     }
                 });
             }
@@ -247,14 +255,13 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
         originPoint = Point.fromLngLat(locationComponent.getLastKnownLocation().getLongitude(),
         locationComponent.getLastKnownLocation().getLatitude());
         GeoJsonSource source = mapboxMap.getStyle().getSourceAs("destination-source-id");
-        if (source != null) {
+         if (source != null) {
             source.setGeoJson(Feature.fromGeometry(destinationPoint));
         }
         //gets the users current location
         getCurrentLocation();
         getRoute(originPoint, destinationPoint);
 
-        reverseGeocode();
         button.setEnabled(true);
         return true;
     }
@@ -297,6 +304,34 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
                         Log.e(TAG, "Error: " + throwable.getMessage());
                     }
                 });
+    }
+
+    private void insertRoute(){
+        boolean save;
+
+        Date date = Calendar.getInstance().getTime();
+        SimpleDateFormat ft= new SimpleDateFormat("EEE MMM dd HH:mm:ss yyyy");
+        String currentDateTime = ft.format(date);
+
+        userID = firebaseAuth.getCurrentUser().getUid();
+
+        LatLng originLatLng = new LatLng(originPoint.latitude(), originPoint.longitude());
+        LatLng destinationLatLng = new LatLng(destinationPoint.latitude(), destinationPoint.longitude());
+
+        Log.d(TAG, userID);
+        Log.d(TAG, currentDateTime);
+        Log.d(TAG, String.valueOf(originLatLng));
+        Log.d(TAG, String.valueOf(destinationLatLng));
+
+        save = db.tripInsert(userID, currentDateTime, transMethod,  originLatLng, destinationLatLng);
+
+        if (save) {
+            Log.d(TAG, "route saved");
+            Toast.makeText(this, "Route was saved successfully!", Toast.LENGTH_SHORT).show();
+        } else {
+            Log.d(TAG, "route was not saved!");
+            Toast.makeText(this, "Route was not saved!", Toast.LENGTH_SHORT).show();
+        }
     }
 
     @SuppressLint("WrongConstant")
