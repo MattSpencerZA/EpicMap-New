@@ -34,6 +34,7 @@ public class ProfileActivity extends AppCompatActivity {
    private FirebaseAuth fAuth;
    private FirebaseFirestore fStore;
    private String userId;
+    Button btnBack;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,6 +51,7 @@ public class ProfileActivity extends AppCompatActivity {
         editProfile = findViewById(R.id.btnEditProfile);
         resetPassword = findViewById(R.id.btnResetPassword);
         btnLogout = findViewById(R.id.btnLogout);
+        btnBack = findViewById(R.id.btnBack);
 
         profileImage = findViewById(R.id.profileImage);
 
@@ -134,6 +136,17 @@ public class ProfileActivity extends AppCompatActivity {
                 i.putExtra("sysPref", sysPref.getText().toString());
                 i.putExtra("transPref", transPref.getText().toString());
                 startActivity(i);
+            }
+        });
+
+        btnBack.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                Intent i = new Intent(ProfileActivity.this, MainActivity.class);
+                startActivity(i);
+                finish();
+
             }
         });
     }

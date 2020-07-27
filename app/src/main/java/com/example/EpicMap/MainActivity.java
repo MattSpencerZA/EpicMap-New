@@ -217,7 +217,7 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
                 button.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        boolean simulateRoute = false;
+                        boolean simulateRoute = true;
                         NavigationLauncherOptions options = NavigationLauncherOptions.builder()
                                 .directionsRoute(currentRoute)
                                 .shouldSimulateRoute(simulateRoute)
