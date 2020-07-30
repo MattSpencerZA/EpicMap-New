@@ -8,6 +8,18 @@
     tools:context=".EditProfileActivity">
 
     <Button
+        android:id="@+id/btnBack"
+        android:layout_width="32dp"
+        android:layout_height="27dp"
+        android:background="@drawable/ic_baseline_arrow_back_ios_24"
+        app:layout_constraintBottom_toTopOf="@+id/recyclerView"
+        app:layout_constraintEnd_toStartOf="@+id/textView4"
+        app:layout_constraintHorizontal_bias="0.055"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.258" />
+
+    <Button
         android:id="@+id/btnDeleteAccount"
         android:layout_width="match_parent"
         android:layout_height="35dp"

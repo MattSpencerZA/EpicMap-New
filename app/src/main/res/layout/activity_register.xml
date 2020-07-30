@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/polyvectwo"
-    tools:context="com.example.EpicMap.Register">
+    tools:context="com.matts.EpicMap.Register">
 
     <TextView
         android:id="@+id/textView2"

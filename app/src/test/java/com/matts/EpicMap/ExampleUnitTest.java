@@ -1,4 +1,4 @@
-package com.example.EpicMap;
+package com.matts.EpicMap;
 
 import org.junit.Test;
 

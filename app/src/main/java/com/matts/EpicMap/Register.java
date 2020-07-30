@@ -1,4 +1,4 @@
-package com.example.EpicMap;
+package com.matts.EpicMap;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;

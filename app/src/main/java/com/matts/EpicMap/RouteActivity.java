@@ -1,4 +1,4 @@
-package com.example.EpicMap;
+package com.matts.EpicMap;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;

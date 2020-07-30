@@ -1,4 +1,4 @@
-package com.example.EpicMap;
+package com.matts.EpicMap;
 
 import com.mapbox.api.directions.v5.DirectionsCriteria;
 

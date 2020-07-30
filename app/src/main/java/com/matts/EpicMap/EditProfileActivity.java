@@ -1,4 +1,4 @@
-package com.example.EpicMap;
+package com.matts.EpicMap;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -29,7 +29,6 @@ import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
-import com.google.firebase.storage.UploadTask;
 import com.squareup.picasso.Picasso;
 
 import java.util.HashMap;
@@ -42,7 +41,7 @@ public class EditProfileActivity extends AppCompatActivity {
     ImageView profileImageView;
     TextView tvSyspref, tvTransPref;
     Spinner sysPref, transportMethod;
-    Button saveBtn, deleteAccBtn;
+    Button saveBtn, deleteAccBtn, btnBack;
     FirebaseAuth fAuth;
     FirebaseFirestore fStore;
     FirebaseUser user;
@@ -63,6 +62,7 @@ public class EditProfileActivity extends AppCompatActivity {
         profileNumber = findViewById(R.id.profilePhoneNo);
         profileImageView = findViewById(R.id.profileImaveView);
         saveBtn = findViewById(R.id.btnSave);
+        btnBack = findViewById(R.id.btnBack);
         deleteAccBtn = findViewById(R.id.btnDeleteAccount);
 
         tvSyspref = findViewById(R.id.tvSysPref);
@@ -130,6 +130,17 @@ public class EditProfileActivity extends AppCompatActivity {
                         Toast.makeText(EditProfileActivity.this, "Email is invalid or already exists", Toast.LENGTH_SHORT).show();
                     }
                 });
+
+            }
+        });
+
+        btnBack.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                Intent i = new Intent(EditProfileActivity.this, MainActivity.class);
+                startActivity(i);
+                finish();
 
             }
         });

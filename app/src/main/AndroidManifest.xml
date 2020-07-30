@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.example.EpicMap">
+    package="com.matts.EpicMap">
 
     <uses-permission android:name="android.permission.SEND_SMS" />
     <uses-permission android:name="android.permission.INTERNET" />
@@ -12,13 +12,13 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".RouteActivity"></activity>
-        <activity android:name=".RouteAdapter" />
-        <activity android:name=".EditProfileActivity" />
-        <activity android:name=".ProfileActivity" />
-        <activity android:name=".Register" />
-        <activity android:name=".MainActivity" />
-        <activity android:name=".LoginActivity">
+        <activity android:name="com.matts.EpicMap.RouteActivity"></activity>
+        <activity android:name="com.matts.EpicMap.RouteAdapter" />
+        <activity android:name="com.matts.EpicMap.EditProfileActivity" />
+        <activity android:name="com.matts.EpicMap.ProfileActivity" />
+        <activity android:name="com.matts.EpicMap.Register" />
+        <activity android:name="com.matts.EpicMap.MainActivity" />
+        <activity android:name="com.matts.EpicMap.LoginActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

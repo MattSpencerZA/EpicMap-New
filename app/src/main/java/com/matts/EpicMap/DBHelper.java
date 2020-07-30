@@ -1,15 +1,13 @@
-package com.example.EpicMap;
+package com.matts.EpicMap;
 
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
-import android.util.Log;
 
 import androidx.annotation.Nullable;
 
-import com.mapbox.api.directions.v5.models.DirectionsRoute;
 import com.mapbox.mapboxsdk.geometry.LatLng;
 
 public class DBHelper extends SQLiteOpenHelper{
